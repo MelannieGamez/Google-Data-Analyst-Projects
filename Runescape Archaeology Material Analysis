@@ -1,0 +1,22 @@
+-- Querying total price and factions of materials:
+SELECT Material, Faction, Total_Price
+FROM runescape-analysis.archaeology_materials.materials
+ORDER BY Total_Price DESC;
+-----------------------------------------
+-- Filtering materials with a high quantity
+SELECT Material, Quantity, Total_Price
+FROM runescape-analysis.archaeology_materials.materials
+WHERE Quantity > 5000;
+-----------------------------------------
+--Finding the average market price for materials in each faction
+SELECT Faction, AVG(Current_Item_Market_Price) AS Avg_Market_Price
+FROM runescape-analysis.archaeology_materials.materials
+GROUP BY Faction;
+-----------------------------------------
+-- Listing materials that had individual price sold higher than the market price
+SELECT Material, 
+       Current_Item_Market_Price, 
+       Individual_Price_Sold, 
+       CONCAT(ROUND(percent_change * 100, 2), '%') AS percent_change
+FROM runescape-analysis.archaeology_materials.materials
+WHERE Individual_Price_Sold > Current_Item_Market_Price
